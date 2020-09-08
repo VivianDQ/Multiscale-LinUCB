@@ -9,19 +9,14 @@ from data_generator import context_random, abrupt2, abrupt_fix
 from Multiscale_LinUCB import Algos_context
 from DLINUCB import DLinUCB, SW_LinUCB
 
-# In[ ]:
-
 
 parser = argparse.ArgumentParser(description='Non-stationary bandit')
 parser.add_argument('-s', '--setting', type=str, help = 'specify the setting')
 parser.add_argument('-k', '--K', type=int, help = 'number of arms')
 parser.add_argument('-d', '--dim', type=int, help = 'dimension of feature vectors')
-parser.add_argument('-cp', '--n_cp', type=int, default = 10, help = 'number of change points')
+parser.add_argument('-cp', '--n_cp', type=int, default = 4, help = 'number of change points')
 
-# parser.add_argument('-dist', '--dist', type=str, default = 'uniform', help = 'distribution of contextual vectors')
 parser.add_argument('-t', '--T', type=int, default = 10000, help = 'total time')
-# parser.add_argument('-ub', '--ub_reward', type=float, default = 1, help = 'upper bound of reward')
-# parser.add_argument('-lb', '--lb_reward', type=float, default = -1, help = 'lower bound of reward')
 parser.add_argument('-rep', '--rep', type=int, default = 10, help = 'repeat experiments for how many times')
 args = parser.parse_args()
 
@@ -56,11 +51,6 @@ def run_contextual(T, K, n_cp, dim, ub_reward, lb_reward, rep, setting):
     mx = 10
     L = math.sqrt(mx**2*dim)
     S = math.sqrt(dim)
-    
-    tau = 200
-    epsilon = -math.sqrt(2)*0.8
-    
-    delta = 0.01
     
     seed = 0
     count = 0
@@ -108,16 +98,12 @@ def run_contextual(T, K, n_cp, dim, ub_reward, lb_reward, rep, setting):
         np.savetxt(path+key, result[key])
     return result
 
-
-# dist = args.dist
 rep = args.rep
 T = args.T
 K = args.K
 dim = args.dim
 n_cp = args.n_cp
 ub_reward, lb_reward = 1, -1
-# ub_reward = args.ub_reward
-# lb_reward = args.lb_reward
 setting = args.setting # choice of algorithms in {dim2, fix, random}
 
 run_contextual(T, K, n_cp, dim, ub_reward, lb_reward, rep, setting)
